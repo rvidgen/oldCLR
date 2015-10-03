@@ -12,21 +12,21 @@ readArticles <- function(articleFiles, dataSource){
   numFiles = length(articleFiles)
   for (file in 1:numFiles) {  
     fileDF = read.csv(articleFiles[file], stringsAsFactors = FALSE)
-    readArticles = rbind(readArticles, fileDF)
+    if (file == 1) {
+      readArticles = fileDF
+    } else {
+      readArticles = rbind(readArticles, fileDF)
+    }
   }
 
-  #infile1 <- read.csv(articleFiles[1], stringsAsFactors = FALSE)
-  #infile2 <- read.csv(articleFiles[2], stringsAsFactors = FALSE)
-  #articleFiles = rbind(infile1, infile2)
-
   # check for duplicate articles and remove
-  articleFiles = unique(articleFiles)
+  readArticles = unique(readArticles)
 
   # add ID column to dataframe to have unique identifier for each article
-  articleFiles$ID <- seq.int(nrow(articleFiles))
+  readArticles$ID <- seq.int(nrow(readArticles))
   
   # rename columns 
-  articleFiles = rename(articleFiles, c("Source.title"="sourcetitle",
+  readArticles = rename(readArticles, c("Source.title"="sourcetitle",
                       "Cited.by"="cites",
                       "Art..No."="artNo",
                       "Page.start"="pagestart",
@@ -37,6 +37,6 @@ readArticles <- function(articleFiles, dataSource){
                       "Document.Type"="doctype"
                       ))
   
-  return(articleFiles)
+  return(readArticles)
 }
 
