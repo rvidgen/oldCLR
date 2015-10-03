@@ -1,0 +1,11 @@
+Package: clr
+Type: Package
+Title: Tools for computational literature review
+Version: 0.1
+Date: 2015-09-29
+Author: Richard Vidgen
+Maintainer: <richard@vidgen.com>
+Description: We created this package to help academics do literature reviews
+License: What license is it under?
+LazyData: TRUE
+Depends: reshape2, ggplot2, lubridate, zoo, plyr, rgdal, RColorBrewer, sp, GISTools, classInt, maptools
