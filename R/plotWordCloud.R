@@ -1,5 +1,5 @@
 # Function to plot wordcloud
-plot_wordcloud<-function(model, myDtm, index, numTerms) {
+plotWordCloud<-function(model, myDtm, index, numTerms) {
   
   model_terms<-terms(model,numTerms)
   model_topics<-topics(model)
