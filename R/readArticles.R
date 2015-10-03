@@ -9,9 +9,15 @@
 
 readArticles <- function(articleFiles, dataSource){
   # merge the input files
-  infile1 <- read.csv(articleFiles[1], stringsAsFactors = FALSE)
-  infile2 <- read.csv(articleFiles[2], stringsAsFactors = FALSE)
-  articleFiles = rbind(infile1, infile2)
+  numFiles = length(articleFiles)
+  for (file in 1:numFiles) {  
+    fileDF = read.csv(articleFiles[file], stringsAsFactors = FALSE)
+    readArticles = rbind(readArticles, fileDF)
+  }
+
+  #infile1 <- read.csv(articleFiles[1], stringsAsFactors = FALSE)
+  #infile2 <- read.csv(articleFiles[2], stringsAsFactors = FALSE)
+  #articleFiles = rbind(infile1, infile2)
 
   # check for duplicate articles and remove
   articleFiles = unique(articleFiles)
