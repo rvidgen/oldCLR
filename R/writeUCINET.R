@@ -33,5 +33,4 @@ for (article in 1:numarticles) {
   }
 }
 
-return()
 }
