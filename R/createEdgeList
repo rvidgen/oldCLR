@@ -1,6 +1,6 @@
+createEdgeList <- function(authors){
 edgesDF <- data.frame( "auth1" = character(), "auth2" = character(),"weight" = integer(), stringsAsFactors=FALSE)
 numarticles = length(authors)
-numarticles
 
 for (article in 1:numarticles) {
   numauthors = length(authors[[article]])
