@@ -1,7 +1,7 @@
 # write a DL file for input to UCINET
 # change n once number of auths is known by importing DL to UCINET
 # this is an edge list - use the edgelist file routine
-
+writeUCINET <- function(authors){
 txt1 = "DL n=3213"
 txt2 = "format = nodelist1"
 txt3 = "labels embedded:"
