@@ -20,3 +20,5 @@ for (article in 1:numarticles) {
 }
 
 edgesDF$weight <- as.numeric(as.character(edgesDF$weight))
+return(edgesDF)
+}
