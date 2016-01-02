@@ -8,4 +8,5 @@ Maintainer: <richard@vidgen.com>
 Description: We created this package to help academics do literature reviews
 License: What license is it under?
 LazyData: TRUE
-Depends: wordcloud, plyr, tm
+Depends: topicmodels, igraph, sqldf, plyr, tm, LDAvis, servr, stringr, stringi, wordcloud, Matrix
+
