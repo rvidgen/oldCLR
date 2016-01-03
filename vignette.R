@@ -1,4 +1,20 @@
-# set the working directory to where your Scopus csv files are stored
+# this R script uses the clr pckage to analyze Scopus downloads in three aspects:
+#   IMPACT - citation analysis of authors, articles, journals
+#   STRUCTURE - network analysis of co-authorships
+#   CONTENT - topic modelling of abstracts
+# follow the instruction below to run and see clr.pdf for full details
+#
+
+# if this is the first time running clr then download code from github
+# install devtools package if not already done and get the clr package
+#library(devtools)
+#install_github("rvidgen/clr")
+library(clr)
+
+ls("package:clr")
+lsf.str("package:clr")
+
+# set the working directory to where your Scopus csv download files are stored
 mainDir = "/Users/..../data"
 # all the ouput analysis will go in this sub folder in the data directory - delete the output folder and contents before running
 outputDir = "output"
@@ -22,15 +38,7 @@ remove_words = c("abstract", "study", "research", "results", "paper",
                  "findings", "analysis", "elsevier", "limited", "emerald",
                  "ieee", "ltd", "taylor", "francis", "igi", "springer", "verlag")
 
-# install devtools package if not already done and get the clr package
-#library(devtools)
-#install_github("rvidgen/clr")
-library(clr)
-
-ls("package:clr")
-lsf.str("package:clr")
-
-# get all the csv files, read in and concatenate
+# get all the csv files, read in and concatenate, remove dupoicate records
 files <- list.files(pattern = "\\.(csv|CSV)$") 
 articleDF = readArticles(articleFiles = files, dataSource = "Scopus")
 
@@ -61,6 +69,9 @@ unique(articleDF$sourcetitle)
 length(unique(articleDF$sourcetitle))
 unique(articleDF$shortsourcetitle)
 
+#
+# IMPACT ANALYSIS
+#
 # graph number of papers by year and plot
 cdata <- ddply(articleDF, c("Year"), summarise,
                countYear = length(Year))
@@ -171,6 +182,9 @@ authorDF = authorDF[order(authorDF$authcites,decreasing=TRUE),]
 head(authorDF)
 write.csv(authorDF, file='authoranalysis.csv', row.names=F)
 
+#
+# STRUCTURE ANALYSIS
+#
 # create a co-author edgelist file
 edgesDF <- createEdgeList(authors = authors)
 str(edgesDF)
@@ -294,6 +308,9 @@ write.graph(graph = g, file = 'coauth.gml', format = 'gml')
 # write a DL file for input to UCINET
 writeUCINET(outfile = 'dloutput.txt', authors = authors, nodecount = 3222)
 
+#
+# CONTENT ANALYSIS
+#
 
 # remove the non-text characters from abstracts
 articleDF$Abstract <- gsub("[^[:alnum:]///' ]", " ", articleDF$Abstract)
