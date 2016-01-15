@@ -15,7 +15,7 @@ ls("package:clr")
 lsf.str("package:clr")
 
 # set the working directory to where your Scopus csv download files are stored
-mainDir = "/Users/..../data"
+mainDir = "/Users/richardvidgen/Dropbox/BirkbeckCLR/data"
 # all the ouput analysis will go in this sub folder in the data directory - delete the output folder and contents before running
 outputDir = "output"
 # abstracts are written as txt file in this sub folder of output
@@ -31,6 +31,8 @@ k = 30
 # specify words to remove from topic model here
 # include the words of the search term used in Scopus to get clearer topic wordclouds
 remove_words = c("abstract", "study", "research", "results", "paper", "available",
+#                 "technology", "acceptance", "model", "tam", "user", "use",
+                 "information", "system", "systems",
                  "one", "two", "three", "four",
                  "findings", "analysis", "elsevier", "limited", "emerald",
                  "ieee", "ltd", "taylor", "francis", "igi", "springer", "verlag")
@@ -41,7 +43,7 @@ articleDF = readArticles(articleFiles = files, dataSource = "Scopus")
 
 nrow(articleDF)
 colnames(articleDF)
-
+head(articleDF)
 
 # create an output directory if it does not exist
 if (file.exists(outputDir)){
@@ -55,16 +57,16 @@ getwd()
 list.files()
 
 # for source title: remove spaces, punctuation, convert to lower case
-articleDF$sourcetitle = tolower(articleDF$sourcetitle)
-articleDF$sourcetitle = gsub("[[:punct:]]", "", articleDF$sourcetitle)
-articleDF$sourcetitle = gsub(" ", "", articleDF$sourcetitle)
-articleDF$shortsourcetitle = str_sub(articleDF$sourcetitle, start=1, end=15)
+articleDF$sourcetitleClean = tolower(articleDF$sourcetitle)
+articleDF$sourcetitleClean = gsub("[[:punct:]]", "", articleDF$sourcetitleClean)
+articleDF$sourcetitleClean = gsub(" ", "", articleDF$sourcetitleClean)
+articleDF$sourcetitleShort = str_sub(articleDF$sourcetitleClean, start=1, end=15)
 
 colnames(articleDF)
 head(articleDF)
 unique(articleDF$sourcetitle)
 length(unique(articleDF$sourcetitle))
-unique(articleDF$shortsourcetitle)
+unique(articleDF$sourcetitleShort)
 
 #
 # IMPACT ANALYSIS
@@ -92,16 +94,16 @@ head(sourcefreq)
 
 # calculate citations for each source
 group_string <- "select articleDF.sourcetitle, sum(articleDF.cites) as SrcCites
-                from articleDF
-                group by articleDF.sourcetitle
-                order by SrcCites DESC"
+from articleDF
+group by articleDF.sourcetitle
+order by SrcCites DESC"
 sourcecites = sqldf(group_string)
 head(sourcecites)
 
 # join citations to number of papers
 join_string <- "select sourcefreq.sourcetitle, sourcefreq.freq, sourcecites.SrcCites
-                from sourcefreq, sourcecites
-                where sourcefreq.sourcetitle = sourcecites.sourcetitle"
+from sourcefreq, sourcecites
+where sourcefreq.sourcetitle = sourcecites.sourcetitle"
 sourceDF = sqldf(join_string)
 sourceDF$impact = sourceDF$SrcCites / sourceDF$freq
 sourceDF = sourceDF[order(sourceDF$impact,decreasing=TRUE),]
@@ -143,10 +145,10 @@ nrow(authunique)
 
 # join articles and authors
 join_string <- "select articleDF.*, authdf.auth
-                from articleDF
-                left join authdf
-                on articleDF.ID = authdf.ID
-                order by articleDF.ID"
+from articleDF
+left join authdf
+on articleDF.ID = authdf.ID
+order by articleDF.ID"
 artauthDF = sqldf(join_string)
 head(artauthDF)
 artauthDF[1:20,]
@@ -170,13 +172,28 @@ nrow(authcit)
 
 # join author freq and cites
 join_string <- "select authunique.auth, authunique.authpapercount, authcit.authcites 
-                from authunique, authcit
-                where authunique.auth = authcit.auth"
+from authunique, authcit
+where authunique.auth = authcit.auth"
 authorDF = sqldf(join_string)
 head(authorDF)
 authorDF$impact = authorDF$authcites / authorDF$authpapercount
 authorDF = authorDF[order(authorDF$authcites,decreasing=TRUE),]
 head(authorDF)
+
+# calculate h index
+numAuthors = nrow(authorDF)
+hIndexVector <- c()
+for (author in 1: numAuthors){
+	authorID <- authorDF[author,1]
+	authorArtDF <- subset(artauthDF, auth == authorID)
+	authorArtDF <- authorArtDF[order(authorArtDF $cites,decreasing=TRUE),]
+	hIndex <- calculateHIndex(authorArtDF)
+	hIndexVector[author] <- hIndex
+	}
+authorDF$hIndex = hIndexVector
+head(authorDF)
+
+authorDF = authorDF[order(authorDF$hIndex,authorDF$authcites, decreasing=TRUE),]
 write.csv(authorDF, file='authoranalysis.csv', row.names=F)
 
 #
@@ -422,9 +439,9 @@ write.csv(topiccite, file='topiccites.csv', row.names=F)
 
 # count the number of papers per topic
 topic_string <- "select topiccite.topTopic as topic, count(topiccite.topTopic) as noPapers
-                 from topiccite
-                 group by topiccite.topTopic
-                 order by topic"
+from topiccite
+group by topiccite.topTopic
+order by topic"
 topicpapers = sqldf(topic_string)
 topicpapers
 write.csv(topicpapers, file='topicpapers.csv', row.names=F)
