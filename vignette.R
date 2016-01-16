@@ -15,7 +15,7 @@ ls("package:clr")
 lsf.str("package:clr")
 
 # set the working directory to where your Scopus csv download files are stored
-mainDir = "/Users/richardvidgen/Dropbox/BirkbeckCLR/data"
+mainDir = "/Users/......./data"
 # all the ouput analysis will go in this sub folder in the data directory - delete the output folder and contents before running
 outputDir = "output"
 # abstracts are written as txt file in this sub folder of output
@@ -32,7 +32,7 @@ k = 30
 # include the words of the search term used in Scopus to get clearer topic wordclouds
 remove_words = c("abstract", "study", "research", "results", "paper", "available",
 #                 "technology", "acceptance", "model", "tam", "user", "use",
-                 "information", "system", "systems",
+#                 "information", "system", "systems",
                  "one", "two", "three", "four",
                  "findings", "analysis", "elsevier", "limited", "emerald",
                  "ieee", "ltd", "taylor", "francis", "igi", "springer", "verlag")
