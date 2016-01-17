@@ -30,7 +30,7 @@ k = 30
 
 # specify words to remove from topic model here
 # include the words of the search term used in Scopus to get clearer topic wordclouds
-remove_words = c("abstract", "study", "research", "results", "paper", "available",
+remove_words = c("abstract", "study", "research", "results", "paper",
 #                 "technology", "acceptance", "model", "tam", "user", "use",
 #                 "information", "system", "systems",
                  "one", "two", "three", "four",
