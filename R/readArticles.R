@@ -26,7 +26,7 @@ readArticles <- function(articleFiles, dataSource){
   readArticles$ID <- seq.int(nrow(readArticles))
   
   # rename columns 
-    colnames(readArticles)[colnames(readArticles)=="Source.title"] <- "sourcetitle"
+  colnames(readArticles)[colnames(readArticles)=="Source.title"] <- "sourcetitle"
   colnames(readArticles)[colnames(readArticles)=="Cited.by"] <- "cites"
   colnames(readArticles)[colnames(readArticles)=="Art..No."] <- "artNo"
   colnames(readArticles)[colnames(readArticles)=="Page.start"] <- "pagestart"
