@@ -26,17 +26,16 @@ readArticles <- function(articleFiles, dataSource){
   readArticles$ID <- seq.int(nrow(readArticles))
   
   # rename columns 
-  readArticles = rename(readArticles, c("Source.title"="sourcetitle",
-                      "Cited.by"="cites",
-                      "Art..No."="artNo",
-                      "Page.start"="pagestart",
-                      "Page.end"="pageend",
-                      "Page.count"="pagecount",
-                      "Authors.with.affiliations"="authaffil",
-                      "Author.Keywords"="keywords",
-                      "Document.Type"="doctype"
-                      ))
-  
+    colnames(readArticles)[colnames(readArticles)=="Source.title"] <- "sourcetitle"
+  colnames(readArticles)[colnames(readArticles)=="Cited.by"] <- "cites"
+  colnames(readArticles)[colnames(readArticles)=="Art..No."] <- "artNo"
+  colnames(readArticles)[colnames(readArticles)=="Page.start"] <- "pagestart"
+  colnames(readArticles)[colnames(readArticles)=="Page.end"] <- "pageend"
+  colnames(readArticles)[colnames(readArticles)=="Page.count"] <- "pagecount"
+  colnames(readArticles)[colnames(readArticles)=="Authors.with.affiliations"] <- "authaffil"
+  colnames(readArticles)[colnames(readArticles)=="Author.Keywords"] <- "keywords"
+  colnames(readArticles)[colnames(readArticles)=="Document.Type"] <- "doctype"
+
   return(readArticles)
 }
 
