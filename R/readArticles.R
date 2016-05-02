@@ -33,7 +33,8 @@ readArticles <- function(articleFiles, dataSource){
   colnames(readArticles)[colnames(readArticles)=="Page.end"] <- "pageend"
   colnames(readArticles)[colnames(readArticles)=="Page.count"] <- "pagecount"
   colnames(readArticles)[colnames(readArticles)=="Authors.with.affiliations"] <- "authaffil"
-  colnames(readArticles)[colnames(readArticles)=="Author.Keywords"] <- "keywords"
+  colnames(readArticles)[colnames(readArticles)=="Author.Keywords"] <- "authorKeywords"
+  colnames(readArticles)[colnames(readArticles)=="Index.Keywords"] <- "indexKeywords"
   colnames(readArticles)[colnames(readArticles)=="Document.Type"] <- "doctype"
 
   return(readArticles)
