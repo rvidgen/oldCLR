@@ -15,9 +15,14 @@ fix_commas <- function(x) {
   gsub(",", "", x, fixed = TRUE)
 }
 
+fix_Jr <- function(x) {
+  x = x[ x != "Jr" ]
+}
+
 auths = lapply(auths, fix_spaces)
 auths = lapply(auths, fix_periods)
 auths = lapply(auths, fix_commas)
+auths = lapply(auths, fix_Jr)
 
 return(auths)
 }
