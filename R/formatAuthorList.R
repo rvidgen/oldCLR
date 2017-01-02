@@ -1,4 +1,5 @@
 # extract and separate authors and trim white-space then remove spaces in names
+
 formatAuthorList <- function(authorVector){
 auths = strsplit(authorVector, ".,", fixed=T)
 auths = lapply(auths, str_trim)
@@ -15,14 +16,9 @@ fix_commas <- function(x) {
   gsub(",", "", x, fixed = TRUE)
 }
 
-fix_Jr <- function(x) {
-  x = x[ x != "Jr" ]
-}
-
 auths = lapply(auths, fix_spaces)
 auths = lapply(auths, fix_periods)
 auths = lapply(auths, fix_commas)
-auths = lapply(auths, fix_Jr)
 
 return(auths)
 }
