@@ -7,7 +7,7 @@
 #' @export
 #' 
 
-readArticles <- function(articleFiles, dataSource){
+readArticlesKeepDup <- function(articleFiles, dataSource){
   # merge the input files
   numFiles = length(articleFiles)
   for (file in 1:numFiles) {  
