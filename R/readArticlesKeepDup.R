@@ -19,7 +19,7 @@ readArticles <- function(articleFiles, dataSource){
     }
   }
 
-  # check for duplicate articles and remove
+  # check for duplicate articles and remove VV
   # readArticles = unique(readArticles)
 
   # add ID column to dataframe to have unique identifier for each article
